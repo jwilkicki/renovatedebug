@@ -12,6 +12,15 @@ metadata:
     argocd.argoproj.io/manifest-generate-paths: .;/values.yaml
 spec:
   project: admin
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
   sources:
     - repoURL: https://kubernetes-sigs.github.io/external-dns/
       targetRevision: 1.14.4
@@ -23,12 +32,4 @@ spec:
     - repoURL: https://github.com/jwilkicki/{{ .Values.cluster.name }}
       targetRevision: HEAD
       ref: values
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: kube-system
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+  
