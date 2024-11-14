@@ -28,7 +28,20 @@ spec:
       helm:
         releaseName: external-dns
         valueFiles:
-          - $values/values.yaml        
+          - $values/values.yaml
+        valuesObject:
+          domainFilters:
+            - {{ .Values.cluster.domain }}
+          policy: sync
+          serviceAccount:
+            annotations:
+              eks.amazonaws.com/role-arn: "arn:aws:iam::{{ .Values.aws.accountid }}:role/{{ .Values.cluster.name }}-external-dns"
+            name: external-dns
+          serviceMonitor:
+            enabled: true
+          sources:
+            - ingress
+            - service
     - repoURL: https://github.com/jwilkicki/{{ .Values.cluster.name }}
       targetRevision: HEAD
       ref: values
