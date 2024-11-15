@@ -29,7 +29,7 @@ spec:
         releaseName: external-dns
         valueFiles:
           - $values/values.yaml
-        valuesObject:
+        values: |
           domainFilters:
             - {{ .Values.cluster.domain }}
           policy: sync
